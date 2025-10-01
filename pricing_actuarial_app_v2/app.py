@@ -39,6 +39,7 @@ server = dash_app.server
 
 # Create the main layout
 dash_app.layout = dbc.Container([
+    dcc.Location(id="url", refresh=False),  # Add URL component for callbacks
     create_header(),
     create_main_content(),
     create_loading_modal(),
