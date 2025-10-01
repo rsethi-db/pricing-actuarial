@@ -1,8 +1,0 @@
-command: [
-  "python",
-  "app.py"
-]
-
-databricks:
-  host: "e2-demo-field-eng.cloud.databricks.com"
-  warehouse_http_path: "/sql/1.0/warehouses/862f1d757f0424f7"
