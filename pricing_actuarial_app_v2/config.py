@@ -23,14 +23,31 @@ class AppConfig:
         self._setup_databricks_config()
     
     def _load_config(self):
-        """Load configuration from YAML file."""
+        """Load configuration from YAML file and environment variables."""
         try:
             with open(self.config_file) as f:
                 self.config = yaml.safe_load(f)
+            
+            # Override with environment variables if available (for Databricks deployment)
+            if self.config.get("databricks", {}).get("use_env_vars", False):
+                self._load_from_env()
+            
             logger.info("Configuration loaded successfully")
         except Exception as e:
             logger.error(f"Failed to load configuration: {e}")
             raise
+    
+    def _load_from_env(self):
+        """Load configuration from environment variables for Databricks deployment."""
+        databricks_config = self.config.get("databricks", {})
+        
+        # Override with environment variables
+        databricks_config["host"] = os.environ.get("DATABRICKS_HOST", databricks_config.get("host"))
+        databricks_config["warehouse_http_path"] = os.environ.get("DATABRICKS_WAREHOUSE_HTTP_PATH", databricks_config.get("warehouse_http_path"))
+        databricks_config["ai_endpoint"] = os.environ.get("DATABRICKS_AI_ENDPOINT", databricks_config.get("ai_endpoint"))
+        
+        self.config["databricks"] = databricks_config
+        logger.info("Configuration overridden with environment variables")
     
     def _validate_config(self):
         """Validate configuration parameters."""

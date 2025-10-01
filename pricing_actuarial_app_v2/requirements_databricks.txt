@@ -1,0 +1,21 @@
+# Databricks-specific requirements
+# These packages are already available in Databricks runtime
+
+# Core web framework
+dash==2.14.2
+dash-bootstrap-components==1.5.0
+flask==2.3.3
+
+# Data processing (pre-installed in Databricks)
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Configuration
+pyyaml==6.0.1
+
+# Databricks SDK (pre-installed in Databricks)
+# databricks-sdk==0.12.0
+# databricks-sql-connector==2.9.0
+
+# Additional packages for production
+gunicorn==21.2.0

@@ -13,7 +13,7 @@ Your pricing actuarial app now includes a **Claude-powered AI chatbot** that use
 ## 🚀 How to Use
 
 1. **Start the app**: `python3 app.py`
-2. **Access at**: http://localhost:9001
+2. **Access at**: Use the URL provided by Databricks
 3. **Click the "AI Assistant" button** in the bottom-right corner
 4. **Start chatting** with your AI pricing assistant!
 

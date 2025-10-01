@@ -63,32 +63,12 @@ def create_main_content():
             # Embedded Databricks Dashboard
             html.Div([
                 html.Div([
-                    # Fallback message for local development
-                    html.Div([
-                        html.Div([
-                            html.I(className="fas fa-exclamation-triangle fa-3x text-warning mb-3"),
-                            html.H4("Dashboard Access", className="mb-3"),
-                            html.P("The embedded Databricks dashboard is not available on localhost domains due to security restrictions.", className="mb-3"),
-                            html.P("To access the full dashboard:", className="mb-2"),
-                            html.Ul([
-                                html.Li("Deploy this app to a production domain"),
-                                html.Li("Or access the dashboard directly in Databricks"),
-                            ], className="text-start"),
-                            html.A(
-                                [html.I(className="fas fa-external-link-alt me-2"), "Open Dashboard in Databricks"],
-                                href="https://e2-demo-field-eng.cloud.databricks.com/dashboardsv3/01f0956986c61040ac04a2287fd5a23f/published?o=1444828305810485",
-                                target="_blank",
-                                className="btn btn-primary mt-3"
-                            )
-                        ], className="text-center p-5", style={"backgroundColor": "#f8f9fa", "borderRadius": "8px", "border": "1px solid #dee2e6"})
-                    ], id="dashboard-fallback", style={"display": "block"}),
-                    
-                    # Original iframe (hidden for localhost)
+                    # Databricks Dashboard iframe
                     html.Iframe(
                         src="https://e2-demo-field-eng.cloud.databricks.com/embed/dashboardsv3/01f0956986c61040ac04a2287fd5a23f",
                         width="100%",
                         height="600px",
-                        style={"border": "none", "borderRadius": "8px", "boxShadow": "0 4px 6px rgba(0, 0, 0, 0.1)", "display": "none"},
+                        style={"border": "none", "borderRadius": "8px", "boxShadow": "0 4px 6px rgba(0, 0, 0, 0.1)"},
                         id="databricks-dashboard"
                     )
                 ], id="dashboard-iframe-container"),

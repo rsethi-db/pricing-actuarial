@@ -3,7 +3,19 @@ command: [
   "app.py"
 ]
 
+# Databricks deployment configuration
 databricks:
   host: "e2-demo-field-eng.cloud.databricks.com"
   warehouse_http_path: "/sql/1.0/warehouses/862f1d757f0424f7"
   ai_endpoint: "kie-b06809e4-endpoint"
+  # Use environment variables for production deployment
+  use_env_vars: true
+
+# App configuration for Databricks
+app:
+  name: "Pricing Cell Generation"
+  description: "AI-powered insurance pricing insights dashboard"
+  version: "1.0.0"
+  port: 8050
+  debug: false
+  host: "0.0.0.0"

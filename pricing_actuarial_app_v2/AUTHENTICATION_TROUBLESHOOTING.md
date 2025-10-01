@@ -30,7 +30,7 @@ The chatbot tries to use Databricks native Claude via SQL queries, but needs pro
 
 ## ✅ Current Status
 
-- **App is running** ✅ - http://localhost:9001
+- **App is running** ✅ - Use the URL provided by Databricks
 - **Chatbot UI is working** ✅ - Click "AI Assistant" button
 - **Offline mode active** ⚠️ - Limited responses without Databricks auth
 - **Full AI mode** ❌ - Requires Databricks authentication

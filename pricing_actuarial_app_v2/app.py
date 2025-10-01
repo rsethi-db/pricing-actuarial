@@ -53,5 +53,22 @@ register_callbacks(dash_app)
 # Run app
 # ==============================
 if __name__ == "__main__":
-    logger.info("Starting Product Features Dashboard...")
-    dash_app.run(debug=True, port=8050, host='0.0.0.0')
+    # Check if running in Databricks environment
+    is_databricks = os.environ.get('DATABRICKS_RUNTIME_VERSION') is not None
+    
+    if is_databricks:
+        # Production settings for Databricks
+        debug_mode = False
+        port = int(os.environ.get('PORT', 8050))
+        host = '0.0.0.0'
+        logger.info("Starting Product Features Dashboard in Databricks environment...")
+        logger.info(f"App will be available at the URL provided by Databricks on port {port}")
+    else:
+        # Development settings
+        debug_mode = True
+        port = 8050
+        host = '0.0.0.0'
+        logger.info("Starting Product Features Dashboard in development mode...")
+        logger.info(f"App available at: http://{host}:{port}")
+    
+    dash_app.run(debug=debug_mode, port=port, host=host)
