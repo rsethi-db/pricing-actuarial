@@ -54,7 +54,23 @@ register_callbacks(dash_app)
 # ==============================
 if __name__ == "__main__":
     # Check if running in Databricks environment
-    is_databricks = os.environ.get('DATABRICKS_RUNTIME_VERSION') is not None
+    is_databricks = (
+        os.environ.get('DATABRICKS_RUNTIME_VERSION') is not None or
+        os.environ.get('DATABRICKS_WORKSPACE_URL') is not None or
+        'databricks' in os.environ.get('HOSTNAME', '').lower() or
+        'databricks' in os.environ.get('USER', '').lower() or
+        os.environ.get('DATABRICKS_APP_ID') is not None or
+        os.environ.get('DATABRICKS_APP_NAME') is not None
+    )
+    
+    # Debug logging
+    logger.info(f"Environment check - HOSTNAME: {os.environ.get('HOSTNAME')}")
+    logger.info(f"Environment check - USER: {os.environ.get('USER')}")
+    logger.info(f"Environment check - DATABRICKS_RUNTIME_VERSION: {os.environ.get('DATABRICKS_RUNTIME_VERSION')}")
+    logger.info(f"Environment check - DATABRICKS_WORKSPACE_URL: {os.environ.get('DATABRICKS_WORKSPACE_URL')}")
+    logger.info(f"Environment check - DATABRICKS_APP_ID: {os.environ.get('DATABRICKS_APP_ID')}")
+    logger.info(f"Environment check - DATABRICKS_APP_NAME: {os.environ.get('DATABRICKS_APP_NAME')}")
+    logger.info(f"Detected Databricks environment: {is_databricks}")
     
     if is_databricks:
         # Production settings for Databricks
