@@ -66,6 +66,9 @@ if __name__ == "__main__":
     # Debug logging
     logger.info(f"Environment check - HOSTNAME: {os.environ.get('HOSTNAME')}")
     logger.info(f"Environment check - USER: {os.environ.get('USER')}")
+    logger.info(f"Environment check - USERNAME: {os.environ.get('USERNAME')}")
+    logger.info(f"Environment check - DATABRICKS_USER: {os.environ.get('DATABRICKS_USER')}")
+    logger.info(f"Environment check - DATABRICKS_USERNAME: {os.environ.get('DATABRICKS_USERNAME')}")
     logger.info(f"Environment check - DATABRICKS_RUNTIME_VERSION: {os.environ.get('DATABRICKS_RUNTIME_VERSION')}")
     logger.info(f"Environment check - DATABRICKS_WORKSPACE_URL: {os.environ.get('DATABRICKS_WORKSPACE_URL')}")
     logger.info(f"Environment check - DATABRICKS_APP_ID: {os.environ.get('DATABRICKS_APP_ID')}")

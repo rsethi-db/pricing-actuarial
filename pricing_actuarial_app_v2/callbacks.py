@@ -154,46 +154,69 @@ def register_callbacks(dash_app):
             # Try to get the actual logged_in user from various sources
             username = "User"  # Default fallback
             
-            # Method 1: Try to get from Databricks context if available
-            try:
-                from pyspark.sql import SparkSession
-                spark = SparkSession.getActiveSession()
-                if spark:
-                    # In Databricks, try to get the actual user
-                    try:
-                        # This works in Databricks environment
-                        result = spark.sql("SELECT current_user() as user").collect()
-                        if result:
-                            username = result[0]['user']
-                    except:
-                        # Fallback to environment variables in Databricks
-                        username = os.environ.get('USER', os.environ.get('USERNAME', 'User'))
-            except:
-                pass
+            # Method 1: Try Databricks-specific environment variables first
+            databricks_username = (
+                os.environ.get('DATABRICKS_USER') or
+                os.environ.get('DATABRICKS_USERNAME') or
+                os.environ.get('DB_USER') or
+                os.environ.get('DB_USERNAME')
+            )
+            if databricks_username:
+                username = databricks_username
+                logger.info(f"Found Databricks username: {username}")
             
-            # Method 2: Try to get from system environment
+            # Method 2: Try to get from Databricks context if available
+            if username == "User":
+                try:
+                    from pyspark.sql import SparkSession
+                    spark = SparkSession.getActiveSession()
+                    if spark:
+                        # In Databricks, try to get the actual user
+                        try:
+                            # This works in Databricks environment
+                            result = spark.sql("SELECT current_user() as user").collect()
+                            if result:
+                                username = result[0]['user']
+                                logger.info(f"Found username from Spark: {username}")
+                        except Exception as e:
+                            logger.info(f"Spark query failed: {e}")
+                            # Fallback to environment variables in Databricks
+                            username = os.environ.get('USER', os.environ.get('USERNAME', 'User'))
+                except Exception as e:
+                    logger.info(f"Spark session failed: {e}")
+                    pass
+            
+            # Method 3: Try to get from system environment
             if username == "User":
                 try:
                     import getpass
                     username = getpass.getuser()
+                    logger.info(f"Found username from getpass: {username}")
                 except:
                     username = os.environ.get('USER', os.environ.get('USERNAME', 'User'))
+                    logger.info(f"Found username from env: {username}")
             
-            # Method 3: Try to get from HTTP headers if available (for web context)
-            try:
-                from flask import request
-                if hasattr(request, 'headers'):
-                    # Check for common authentication headers
-                    auth_header = request.headers.get('Authorization')
-                    if auth_header:
-                        # Extract username from Bearer token or other auth methods
-                        # This is a simplified example _ you'd implement proper token parsing
-                        pass
-            except:
-                pass
+            # Method 4: Try to get from HTTP headers if available (for web context)
+            if username == "User":
+                try:
+                    from flask import request
+                    if hasattr(request, 'headers'):
+                        # Check for common authentication headers
+                        auth_header = request.headers.get('Authorization')
+                        if auth_header:
+                            # Extract username from Bearer token or other auth methods
+                            # This is a simplified example _ you'd implement proper token parsing
+                            pass
+                except:
+                    pass
+            
+            # Method 5: Try to extract from email if username contains @
+            if '@' in username:
+                username = username.split('@')[0]
             
             # Format the username: remove dots and capitalize first letters
             formatted_username = format_username(username)
+            logger.info(f"Final formatted username: {formatted_username}")
             return f"Hello {formatted_username}!"
         except Exception as e:
             logger.error(f"Error getting username: {e}")
