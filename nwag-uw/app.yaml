@@ -1,0 +1,29 @@
+command: [
+  "python",
+  "app.py"
+]
+
+# Environment variables for authentication
+# Note: Set DATABRICKS_TOKEN in Databricks Apps UI environment variables
+# DO NOT commit actual tokens to git
+env:
+  - name: DATABRICKS_TOKEN
+    valueFrom: DATABRICKS_TOKEN  # Will be set in Databricks Apps environment
+
+# Databricks deployment configuration
+databricks:
+  host: "e2-demo-field-eng.cloud.databricks.com"
+  warehouse_http_path: "/sql/1.0/warehouses/862f1d757f0424f7"
+  ai_endpoint: "kie-86b9c0bd-endpoint"
+  genie_space_id: "01f0a3bc10ba1357bde100a5f8527509"
+  # Use environment variables for production deployment
+  use_env_vars: true
+
+# App configuration for Databricks
+app:
+  name: "NWAG Rosie"
+  description: "AI-powered Underwriter Workbench"
+  version: "1.0.0"
+  port: 8050
+  debug: false
+  host: "0.0.0.0"
